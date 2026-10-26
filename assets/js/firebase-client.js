@@ -3,14 +3,14 @@
   // إعدادات مشروع Firebase — موحّد للموقعين
   // ═══════════════════════════════════════════════════════════
   const firebaseConfig = {
-    apiKey: "AIzaSyDNQotHYC8WcMi1AAHrHJe_rQR7OZ0V5FI",
-    authDomain: "qatar-oman.firebaseapp.com",
-    databaseURL: "https://qatar-oman-default-rtdb.firebaseio.com",
-    projectId: "qatar-oman",
-    storageBucket: "qatar-oman.firebasestorage.app",
-    messagingSenderId: "488967046879",
-    appId: "1:488967046879:web:77d744e1b45d0f59da8b6a",
-    measurementId: "G-FP0FKD9W4T"
+    apiKey: "AIzaSyB0aNpVii3ELiBbHDovVIo5vFntEfs4P7c",
+    authDomain: "oman-abdulah.firebaseapp.com",
+    databaseURL: "https://oman-abdulah-default-rtdb.firebaseio.com",
+    projectId: "oman-abdulah",
+    storageBucket: "oman-abdulah.firebasestorage.app",
+    messagingSenderId: "837540804629",
+    appId: "1:837540804629:web:4c9dfb0eb236964037b61c",
+    measurementId: "G-CPRD9QS6CX"
   };
 
   if (!firebase.apps.length) {
