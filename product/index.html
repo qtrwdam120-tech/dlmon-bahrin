@@ -200,99 +200,7 @@ h1 { font-size: 24px; color: #111; line-height: 1.5; font-weight: 800; }
 
 <script>
 // نسخة مدمجة من الكتالوج: عرض فوري بلا انتظار الشبكة، ثم تُزامَن من Firestore
-const defaultProducts = [
-    { _id: 'S1OG6OdRczZ759QvIwOE', name: 'صدور دجاج فيليه 500 غرام', desc: 'صدور دجاج فيليه طازجة عالية الجودة، طرية ومتعددة الاستخدامات. غنية بالبروتين وقليلة الدهون، مثالية للشوي أو الطبخ أو إضافتها إلى وصفاتك المفضلة.', price: '26.500', img: '/assets/images/products/64cfaf4f58a04ba1.webp' },
-    { _id: 'nwN3f1m8eHN95QnaHN1d', name: 'أفخاذ دجاج (درام ستيك) 500 غرام', desc: 'أفخاذ دجاج طازجة بلحم طري وطعم غني. غنية بالبروتين، مثالية للشوي والتحميص والقلي ولجميع وصفات العائلة اليومية.', price: '14.750', img: '/assets/images/products/bca1d85d40df473d.webp' },
-    { _id: 'ojP5ioggS4Hfm76S4rj8', name: 'قوانص دجاج 500 غرام', desc: 'قوانص دجاج طازجة بقوام غني وطعم مميز. غنية بالبروتين، مثالية للقلي والتحمير واليخنات والأطباق التقليدية.', price: '11.750', img: '/assets/images/products/75ea36470623ad14.webp' },
-    { _id: 'r4o9smkxTUTCrY8Kjr6X', name: 'دجاج كامل طازج 1000 غرام', desc: 'دجاج كامل طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '22.500', img: '/assets/images/products/cbe97a395f35b126.webp' },
-    { _id: 'iSPmE4PFDKIRRRCLv43G', name: 'قلوب دجاج 500 غرام', desc: 'قلوب دجاج طازجة بقوام غني وطعم مميز. غنية بالبروتين والحديد، مثالية للقلي والشوي والتحمير وتنويع الأطباق اليومية.', price: '12.750', img: '/assets/images/products/212a369aa60c300c.webp' },
-    { _id: 'fulPUMvwYKAcGFkuGrwS', name: 'كبود دجاج 500 غرام', desc: 'كبود دجاج طازجة منتقاة بعناية، بقوام غني وطعم مميز. غنية بالبروتين والحديد، مثالية للأطباق التقليدية والوجبات المنزلية.', price: '13.750', img: '/assets/images/products/f6fcfd0275e816df.webp' },
-    { _id: 'YdZ5l5oWQGqAbjaQrBXH', name: 'دجاج مفروم طازج 500 غرام', desc: 'دجاج مفروم طازج مُحضّر بعناية لسهولة الاستخدام في المطبخ. غني بالبروتين وسهل الطبخ، مثالي للبرغر والكفتة والمعكرونة والحشوات.', price: '14.000', img: '/assets/images/products/87ca2f7cca251524.webp' },
-    { _id: 'gIRO1c2bue7PkfhvYWmT', name: 'رقاب دجاج 500 غرام', desc: 'رقاب دجاج طازجة، مثالية للشوربات واليخنات والمرق المنزلي.', price: '3.750', img: '/assets/images/products/9d244cb5327126b8.webp' },
-    { _id: '2giQrXHcHC2BoQCIV52r', name: 'شيش طاووق 500 غرام', desc: 'شيش طاووق من صدور دجاج طازجة متبّلة بخلطة بهارات شهية. غني بالبروتين وسهل التحضير، مثالي للشوي والسندويشات والوجبات اليومية.', price: '25.000', img: '/assets/images/products/38431670b251e798.webp' },
-    { _id: 'mHK5OnnfOR2pURPpfVMU', name: 'فخذ دجاج (ورك) 500 غرام', desc: 'أفخاذ دجاج (ورك) طازجة بلحم طري وطعم غني. غنية بالبروتين، مثالية للشوي والتحميص والقلي.', price: '9.000', img: '/assets/images/products/246a6301544d55ba.webp' },
-    { _id: 'v2eqxAnbTBdQSpM59tcz', name: 'أرجل دجاج كاملة 500 غرام', desc: 'أرجل دجاج كاملة طازجة بلحم طري وطعم غني. غنية بالبروتين ومعبأة بعناية للحفاظ على الطزاجة، مثالية للشوي والتحميص والقلي.', price: '11.750', img: '/assets/images/products/8892553fd32c058f.webp' },
-    { _id: 'zBnczV6WWUpklL42kKXo', name: 'أجنحة دجاج كاملة 500 غرام', desc: 'أجنحة دجاج كاملة طازجة بلحم طري وطعم غني. غنية بالبروتين، مثالية للشوي والتحميص والقلي وللجمعات.', price: '8.250', img: '/assets/images/products/9fe5e74d5141593f.webp' },
-    { _id: 'XCrjoFobwOwdnoiolWA3', name: 'دجاج صغير طازج 600 غرام × 2', desc: 'دجاج صغير طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '28.000', img: '/assets/images/products/db50fe6795304556.webp' },
-    { _id: 'dzEQfqLvrBFKQbrIx6Z3', name: 'مكعبات صدور دجاج 500 غرام', desc: 'مكعبات من صدور دجاج طازجة عالية الجودة، مقطّعة لسهولة التحضير. غنية بالبروتين وقليلة الدهون، مثالية للكاري والسلطات والمعكرونة والوجبات السريعة.', price: '27.000', img: '/assets/images/products/3204f9bb42f1b1d9.webp' },
-    { _id: 'MlDtoYnnlmdP4PDaVQ6m', name: 'شرائح صدور دجاج 500 غرام', desc: 'شرائح من صدور دجاج طازجة عالية الجودة، جاهزة للطبخ السريع. غنية بالبروتين وقليلة الدهون، مثالية للراب والسلطات والسندويشات.', price: '27.500', img: '/assets/images/products/cc6eff5716136ee2.webp' },
-    { _id: 'ncNAjbtkatqvUJFevht0', name: 'أقدام دجاج 500 غرام', desc: 'أقدام دجاج طازجة غنية بالبروتين، خيار صحي ومفيد لحيواناتك الأليفة. تساهم في صحة الأسنان والمفاصل وتوفّر مضغاً لذيذاً ومشبعاً.', price: '5.000', img: '/assets/images/products/04a1783b7126810d.webp' },
-    { _id: 'MSfCKnEELL2xBqaIPXV6', name: 'قطع دجاج مشكّلة 1000 غرام', desc: 'قطع دجاج مشكّلة طازجة بلحم طري وطعم غني. غنية بالبروتين، مثالية للشوي والتحميص والقلي.', price: '14.250', img: '/assets/images/products/0b6afac1582cc4f7.webp' },
-    { _id: 'xKksGeNI20AZ3JaBieGe', name: 'نصف دجاج متبّل باربكيو 500 غرام', desc: 'نصف دجاج طازج متبّل بخلطة الباربكيو المدخّنة. غني بالبروتين وجاهز للطبخ، مثالي للشوي والتحميص ووجبات العائلة.', price: '14.000', img: '/assets/images/products/79b0d502728e1235.webp' },
-    { _id: 'jUQF3UXPvkRFpnSyt5jW', name: 'نصف دجاج متبّل مظبي 500 غرام', desc: 'نصف دجاج طازج متبّل ببهارات المظبي الأصيلة بطعم مدخّن غني مستوحى من المطبخ التقليدي. غني بالبروتين وجاهز للطبخ.', price: '14.000', img: '/assets/images/products/89275693f7ff0f65.webp' },
-    { _id: 'GNLnKqUMgh5yh3cAl0z0', name: 'أفخاذ دجاج متبّلة باربكيو 500 غرام', desc: 'أفخاذ دجاج طازجة متبّلة بخلطة الباربكيو المدخّنة. غنية بالبروتين وجاهزة للطبخ، مثالية للشوي والتحميص.', price: '14.250', img: '/assets/images/products/5d53c059ff94313e.webp' },
-    { _id: 'uExSYxQ3rQJkdMG5Vcl5', name: 'أجنحة دجاج متبّلة باربكيو 500 غرام', desc: 'أجنحة دجاج طازجة متبّلة بخلطة الباربكيو المدخّنة. غنية بالبروتين وجاهزة للطبخ، مثالية للشوي وللجمعات.', price: '11.000', img: '/assets/images/products/66be65de5ea520e3.webp' },
-    { _id: 'RTEWF6TOZGgNk6iwKMjs', name: 'صدور دجاج فيليه متبّلة برياني 500 غرام', desc: 'صدور دجاج فيليه طازجة متبّلة ببهارات البرياني العطرية بطعم غني وتقليدي. غنية بالبروتين وجاهزة للطبخ.', price: '29.250', img: '/assets/images/products/2ff885eb8b669009.webp' },
-    { _id: 'qCGbphRfdncA1oUsoe1i', name: 'نصف دجاج متبّل برياني 500 غرام', desc: 'نصف دجاج طازج متبّل ببهارات البرياني العطرية. غني بالبروتين وجاهز للطبخ، مثالي لوجبات العائلة.', price: '14.000', img: '/assets/images/products/f02c02162c1c017d.webp' },
-    { _id: 'M8iemWZzu5ZnZJz5gPAx', name: 'أرجل دجاج متبّلة برياني 500 غرام', desc: 'أرجل دجاج طازجة متبّلة ببهارات البرياني العطرية. غنية بالبروتين وجاهزة للطبخ.', price: '11.500', img: '/assets/images/products/0b3475d325f934cc.webp' },
-    { _id: '2TOHeov8FLhYAA2ynWl2', name: 'شيش طاووق متبّل برياني 500 غرام', desc: 'شيش طاووق من صدور دجاج طازجة متبّل ببهارات البرياني العطرية. غني بالبروتين وجاهز للطبخ، مثالي للشوي.', price: '27.750', img: '/assets/images/products/8a9b4ec13451ced9.webp' },
-    { _id: 'cDaciF4hRMmlzmFMUwRU', name: 'صدور دجاج فيليه متبّلة مظبي 500 غرام', desc: 'صدور دجاج فيليه طازجة متبّلة ببهارات المظبي الأصيلة بطعم مدخّن غني. غنية بالبروتين وجاهزة للطبخ.', price: '29.250', img: '/assets/images/products/07788c3fe76e4c40.webp' },
-    { _id: 'zjqLtpH7uhKoQdvajyvf', name: 'أفخاذ دجاج متبّلة مظبي 500 غرام', desc: 'أفخاذ دجاج طازجة متبّلة ببهارات المظبي الأصيلة بطعم مدخّن غني. غنية بالبروتين وجاهزة للطبخ.', price: '14.250', img: '/assets/images/products/3a8ed432ad0aa57a.webp' },
-    { _id: 'TZBpgXT7FVlqGFlbPMLz', name: 'أرجل دجاج متبّلة مظبي 500 غرام', desc: 'أرجل دجاج طازجة متبّلة ببهارات المظبي الأصيلة. غنية بالبروتين وجاهزة للطبخ، مثالية للشوي والتحميص.', price: '11.500', img: '/assets/images/products/9138a9671d3d7b53.webp' },
-    { _id: 'WwQsdYnU0RJLFueBaSgW', name: 'شيش طاووق متبّل مظبي 500 غرام', desc: 'شيش طاووق من صدور دجاج طازجة متبّل ببهارات المظبي الأصيلة بطعم مدخّن غني. غني بالبروتين وجاهز للطبخ.', price: '27.750', img: '/assets/images/products/60dad38de03199a1.webp' },
-    { _id: 'ZyqvUxpFP70rPQWN6QWS', name: 'شيش طاووق متبّل حار 500 غرام', desc: 'شيش طاووق من صدور دجاج طازجة متبّل بخلطة بهارات حارة وغنية. غني بالبروتين وجاهز للطبخ، مثالي للشوي والراب.', price: '27.750', img: '/assets/images/products/cf43edec84a46f3d.webp' },
-    { _id: 'Tlr3lRKO1oTBmNIoWHEf', name: 'صدور دجاج فيليه متبّلة باربكيو 500 غرام', desc: 'صدور دجاج فيليه طازجة متبّلة بخلطة الباربكيو المدخّنة. غنية بالبروتين وجاهزة للطبخ، مثالية للشوي والسندويشات.', price: '29.250', img: '/assets/images/products/684549406577a1ab.webp' },
-    { _id: 'ZIWEF0fXSx9iHAVf3Ap7', name: 'أرجل دجاج متبّلة باربكيو 500 غرام', desc: 'أرجل دجاج طازجة متبّلة بخلطة الباربكيو المدخّنة. غنية بالبروتين وجاهزة للطبخ.', price: '11.500', img: '/assets/images/products/56205362ebc1ba9b.webp' },
-    { _id: 'VMn7JqE4VqSqBX2CZEaI', name: 'شيش طاووق متبّل باربكيو 500 غرام', desc: 'شيش طاووق من صدور دجاج طازجة متبّل بخلطة الباربكيو المدخّنة. غني بالبروتين وجاهز للطبخ.', price: '27.750', img: '/assets/images/products/b4b7f408aadec921.webp' },
-    { _id: '2OlfKFXBb8Ix4odms5no', name: 'أفخاذ دجاج متبّلة برياني 500 غرام', desc: 'أفخاذ دجاج طازجة متبّلة ببهارات البرياني العطرية. غنية بالبروتين وجاهزة للطبخ.', price: '14.250', img: '/assets/images/products/ed1ae07dcfc0f9ea.webp' },
-    { _id: '3sN35Kfkvl7rIg7yQJ5K', name: 'أجنحة دجاج متبّلة برياني 500 غرام', desc: 'أجنحة دجاج طازجة متبّلة ببهارات البرياني العطرية. غنية بالبروتين وجاهزة للطبخ.', price: '11.000', img: '/assets/images/products/7e7dda183fd0fbc0.webp' },
-    { _id: 'BuUqggzb6flHbU8EBbMl', name: 'أجنحة دجاج متبّلة مظبي 500 غرام', desc: 'أجنحة دجاج طازجة متبّلة ببهارات المظبي الأصيلة بطعم مدخّن غني. غنية بالبروتين وجاهزة للطبخ.', price: '11.000', img: '/assets/images/products/21fb68da81b99e92.webp' },
-    { _id: '11cg05LrMLWZRzOn3T36', name: 'صدور دجاج فيليه متبّلة حار 500 غرام', desc: 'صدور دجاج فيليه طازجة متبّلة بخلطة بهارات حارة وغنية. غنية بالبروتين وجاهزة للطبخ.', price: '29.250', img: '/assets/images/products/2e6d75f9f697e4e6.webp' },
-    { _id: 'xPKT6UC9yPzmN8KsdroX', name: 'أفخاذ دجاج متبّلة حار 500 غرام', desc: 'أفخاذ دجاج طازجة متبّلة بخلطة بهارات حارة. غنية بالبروتين وجاهزة للطبخ.', price: '14.250', img: '/assets/images/products/bcf67738ace8e0cf.webp' },
-    { _id: '8xI3wehKM0FQRwBHt8y7', name: 'نصف دجاج متبّل حار 500 غرام', desc: 'نصف دجاج طازج متبّل بخلطة بهارات حارة وغنية. غني بالبروتين وجاهز للطبخ.', price: '14.000', img: '/assets/images/products/659b861b76e28535.webp' },
-    { _id: '438jfz1qDUbNRG3ngqee', name: 'أرجل دجاج متبّلة حار 500 غرام', desc: 'أرجل دجاج طازجة متبّلة بخلطة بهارات حارة. غنية بالبروتين وجاهزة للطبخ.', price: '11.500', img: '/assets/images/products/998a5b3bb5804244.webp' },
-    { _id: 'acSJbYZKMRB1bXYxHZOQ', name: 'أجنحة دجاج متبّلة حار 500 غرام', desc: 'أجنحة دجاج طازجة متبّلة بخلطة بهارات حارة. غنية بالبروتين وجاهزة للطبخ.', price: '11.000', img: '/assets/images/products/83b4480d7674f006.webp' },
-    { _id: 'Eusox1P1ltl5fbNJRBwf', name: 'صدور دجاج فيليه متبّلة تندوري 500 غرام', desc: 'صدور دجاج فيليه طازجة متبّلة ببهارات التندوري التقليدية بطعم أصيل وغني. غنية بالبروتين وجاهزة للطبخ.', price: '29.250', img: '/assets/images/products/9725d7a022d69dc2.webp' },
-    { _id: 'CzUrwn0OcXdKFajpma9O', name: 'أرجل دجاج متبّلة تندوري 500 غرام', desc: 'أرجل دجاج طازجة متبّلة ببهارات التندوري التقليدية. غنية بالبروتين وجاهزة للطبخ.', price: '11.500', img: '/assets/images/products/c2f478bb4ff61367.webp' },
-    { _id: 'ry7W8ywklZbC5tHanmSD', name: 'أفخاذ دجاج متبّلة تندوري 500 غرام', desc: 'أفخاذ دجاج طازجة متبّلة ببهارات التندوري التقليدية. غنية بالبروتين وجاهزة للطبخ.', price: '14.250', img: '/assets/images/products/93ef0fb0967f9bbc.webp' },
-    { _id: 'QFpUF8aYHzpecq23JOm3', name: 'نصف دجاج متبّل تندوري 500 غرام', desc: 'نصف دجاج طازج متبّل ببهارات التندوري التقليدية بطعم أصيل. غني بالبروتين وجاهز للطبخ.', price: '14.000', img: '/assets/images/products/b0a4a2cc0f3eed50.webp' },
-    { _id: 'srIMYbsS8Y5BOj3c8E08', name: 'شيش طاووق متبّل تندوري 500 غرام', desc: 'شيش طاووق من صدور دجاج طازجة متبّل ببهارات التندوري التقليدية. غني بالبروتين وجاهز للطبخ.', price: '27.750', img: '/assets/images/products/70d030c6b9655b53.webp' },
-    { _id: 'SwIAAhG8hYqcDZ4mY6Qs', name: 'أجنحة دجاج متبّلة تندوري 500 غرام', desc: 'أجنحة دجاج طازجة متبّلة ببهارات التندوري التقليدية. غنية بالبروتين وجاهزة للطبخ.', price: '11.000', img: '/assets/images/products/d5596fe61eaf9ddf.webp' },
-    { _id: 'hvF6THoRILY8BNU1OrNP', name: 'دجاج كامل طازج 800 غرام', desc: 'دجاج كامل طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '18.000', img: '/assets/images/products/7d11a6bb00898616.webp' },
-    { _id: 'Mwb10LM3jGOYjKqdFh26', name: 'دجاج كامل طازج 900 غرام', desc: 'دجاج كامل طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '20.250', img: '/assets/images/products/d3686bb3c96a408b.webp' },
-    { _id: 'fuFrz7w7SQ0TYkld2Pmn', name: 'دجاج كامل طازج 1100 غرام', desc: 'دجاج كامل طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '24.750', img: '/assets/images/products/ed94349197d7ea66.webp' },
-    { _id: 'R5Ii05AQssGu4Jlfw3He', name: 'دجاج كامل طازج 1200 غرام', desc: 'دجاج كامل طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '27.000', img: '/assets/images/products/8ad8c7f8bf4d83c2.webp' },
-    { _id: '4iPz3a1y016ckh0MsuOX', name: 'دجاج كامل طازج 1300 غرام', desc: 'دجاج كامل طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '29.000', img: '/assets/images/products/97a32529db9999fd.webp' },
-    { _id: 'usvJD2SJq9gdXR6vvNoe', name: 'دجاج كامل طازج 1400 غرام', desc: 'دجاج كامل طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '31.000', img: '/assets/images/products/48b9a5996c6edf44.webp' },
-    { _id: 'd0CvubG0NKn0pAsknDGS', name: 'دجاج صغير طازج 500 غرام × 2', desc: 'دجاج صغير طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '24.000', img: '/assets/images/products/d217128b266786a2.webp' },
-    { _id: 'ZjGj6gmJlhoCScgAttlP', name: 'دجاج صغير طازج 400 غرام × 2', desc: 'دجاج صغير طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '22.500', img: '/assets/images/products/c3fe73d3048c7729.webp' },
-    { _id: 'm2Pf9KYt1JIwJjrc6SOS', name: 'صدر دجاج كامل 500 غرام', desc: 'صدر دجاج كامل طازج بلحم طري وطعم غني طبيعي. غني بالبروتين وقليل الدهون، مثالي للشوي والتحميص والطبخ الصحي.', price: '15.000', img: '/assets/images/products/2aa94c3be73d9d62.webp' },
-    { _id: 'gwFgP8G7vuEEo8s62Xk6', name: 'دجاج بلدي طازج حر الرعي 800 غرام', desc: 'دجاج بلدي طازج حر الرعي، مُربّى طبيعياً بدون مضادات حيوية، بلحم طري وطعم غني. غني بالبروتين عالي الجودة وأوميغا 3 والسيلينيوم، ومعبأ بعناية للحفاظ على الطزاجة.', price: '52.000', img: '/assets/images/products/b816ae625da69759.webp' },
-    { _id: 'p0TVEPaua57zo8ql3XRP', name: 'دجاج بلدي طازج حر الرعي 900 غرام', desc: 'دجاج بلدي طازج حر الرعي، مُربّى طبيعياً بدون مضادات حيوية، بلحم طري وطعم غني. غني بالبروتين عالي الجودة وأوميغا 3 والسيلينيوم، ومعبأ بعناية للحفاظ على الطزاجة.', price: '58.500', img: '/assets/images/products/c00af4b7bb16893c.webp' },
-    { _id: '7lnkdv6L6LBlfViq13jr', name: 'دجاج بلدي طازج حر الرعي 1000 غرام', desc: 'دجاج بلدي طازج حر الرعي، مُربّى طبيعياً بدون مضادات حيوية، بلحم طري وطعم غني. غني بالبروتين عالي الجودة وأوميغا 3 والسيلينيوم، ومعبأ بعناية للحفاظ على الطزاجة.', price: '65.000', img: '/assets/images/products/17b801e55832a21f.webp' },
-    { _id: 'hI6aVb5QYPVvgHEP2qzi', name: 'دجاج بلدي طازج حر الرعي 1100 غرام', desc: 'دجاج بلدي طازج حر الرعي، مُربّى طبيعياً بدون مضادات حيوية، بلحم طري وطعم غني. غني بالبروتين عالي الجودة وأوميغا 3 والسيلينيوم، ومعبأ بعناية للحفاظ على الطزاجة.', price: '71.500', img: '/assets/images/products/8f1ef65748999603.webp' },
-    { _id: 'o5gVM6nWCFAnBxdSj3Ed', name: 'جلد دجاج 1000 غرام', desc: 'جلد دجاج طازج درجة أولى 1000 غرام.', price: '5.000', img: '/assets/images/products/51b596d4dd0e24c6.webp' },
-    { _id: 'L0rG80hTYW0XTv7o82X5', name: 'دجاج كامل طازج 700 غرام', desc: 'دجاج كامل طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '15.400', img: '/assets/images/products/22d438afda50f3fe.webp' },
-    { _id: 'MPYGGEpQ3Bn8Qyug87mN', name: 'دجاج كامل مدخّن 1100 غرام', desc: 'دجاج كامل مدخّن جاهز للأكل ساخناً أو بارداً. مُحضّر من دجاج طازج ومدخّن بالخشب الطبيعي لطعم غني وقوام طري. غني بالبروتين، مثالي للوجبات السريعة والسندويشات والسلطات.', price: '37.050', img: '/assets/images/products/5ac57e2d83e5eebf.webp' },
-    { _id: 'jgt4EnqbJ04saLNKhZ9w', name: 'دجاج كامل مدخّن 800 غرام', desc: 'دجاج كامل مدخّن 800 غرام، جاهز للأكل ساخناً أو بارداً.', price: '27.550', img: '/assets/images/products/5b69b3cc52db624c.webp' },
-    { _id: 'AbT6V1AfooDiRwOgezVk', name: 'دجاج كامل مدخّن 1000 غرام', desc: 'دجاج كامل مدخّن جاهز للأكل ساخناً أو بارداً. مُحضّر من دجاج طازج ومدخّن بالخشب الطبيعي لطعم غني وقوام طري. غني بالبروتين، مثالي للوجبات السريعة والسندويشات والسلطات.', price: '34.200', img: '/assets/images/products/edd350ca76035a82.webp' },
-    { _id: 'o2Z2TKocqgQCcXmgOU5z', name: 'دجاج كامل طازج 1000 غرام - حجم كبير', desc: 'دجاج كامل طازج بلحم طري وطعم غني لوجبات العائلة. غني بالبروتين ومعبأ بعناية للحفاظ على الطزاجة، مثالي للشوي والتحميص والقلي.', price: '25.000', img: '/assets/images/products/22d438afda50f3fe.webp' },
-    { _id: 'loesbyo7vHo9InRezI1g', name: 'عسل السدر الكويتي المميز 500 غرام', desc: 'بوكس 500 غرام', price: '20.000', img: '/assets/images/products/0c8c1ee5d479af63.webp' },
-    { _id: 'flkFwemf1bycshXSv2AJ', name: 'عسل السدر الكويتي المميز 250 غرام', desc: '250 غرام', price: '10.000', img: '/assets/images/products/49001983e7f062e3.webp' },
-    { _id: '21rBvYjGHYuU7e05merX', name: 'عرض 50 عصفور التين', desc: 'بوكس 50 عصفور تين درجة أولى حجم كبير.', price: '7.000', img: '/assets/images/teen-50.jpg' },
-    { _id: 'chNFHFvTno27Rni4dA3k', name: 'تمر خلاص جامبو', desc: 'بوكس 8 كيلو', price: '3.960', img: '/assets/images/products/6788ecc768d939f1.webp' },
-    { _id: 'xIKpzPzXEb4vyqb56tkq', name: 'حمام زاجل - بوكس 20 حمامة', desc: 'بوكس 20 حمامه وزن 750 غرام', price: '12.000', img: '/assets/images/products/93a934c2e2679fac.webp' },
-    { _id: 'p9mSIOsF32G0cilWQnvt', name: 'حمام زاجل - بوكس 10 حمامات', desc: 'بوكس 10 حمامات وزن 750 غرام', price: '8.000', img: '/assets/images/products/93a934c2e2679fac.webp' },
-    { _id: '5cfFS0nEJ8E6zVLtONSc', name: 'تين اخضر العبدلي الفاخر', desc: 'بوكس 3 كيلو', price: '3.500', img: '/assets/images/products/effb0bf6403e9c9a.webp' },
-    { _id: '3dJVqXNWYIAS9qOjamCA', name: 'سمك البلطي', desc: 'بوكس 5 كيلو', price: '8.000', img: '/assets/images/products/464d07923446889b.webp' },
-    { _id: '9kO1qx9xwOQxaUPIWIJe', name: 'بيض دجاج عربي', desc: '3 اطباق', price: '7.000', img: '/assets/images/products/2c4404c7422c6f9b.webp' },
-    { _id: 'v7flepe09O840aJcMmlw', name: 'عرض تمر الصقعي الملكي', desc: 'بوكس 8 كيلو تمر صقعي ملكي فاخر.', price: '3.500', img: '/assets/images/sakey-5.jpg' },
-    { _id: 'YFQkJbigZpNIO63IZtAv', name: 'عرض التين الأخضر الفاخر', desc: 'بوكس 5 كيلو تين أخضر فاخر.', price: '3.500', img: '/assets/images/teen-3.jpg' },
-    { _id: 'aYLUz1zdzt7RWRkuyJlI', name: 'عرض تمر الخلاص المكبوس', desc: 'بوكس 8 كيلو تمر الخلاص المكبوس درجة أولى.', price: '3.960', img: '/assets/images/khals-8.jpg' },
-    { _id: 'hL12T9KFTb15dqYivRLk', name: 'عرض ربيان 10 كيلو - حجم متوسط', desc: '10 كيلو ربيان النعيرية حجم متوسط', price: '8.000', img: '/assets/images/products/9d347f7215403ff3.webp' },
-    { _id: 'NevFP4IX6CIN7N85sGhz', name: 'عرض ربيان 10 كيلو - حجم كبير', desc: '10 كيلو ربيان  النعيرية حجم كبير', price: '10.000', img: '/assets/images/products/9d347f7215403ff3.webp' },
-    { _id: 'IE3CVwu8yYLa4yGaIyZX', name: 'عرض كل الكويت الجديد', desc: '10 كيلو روبيان عماني جامبو طازج.', price: '5.000', img: '/assets/images/kuwaiti-jumbo-robian-10kg-new.jpg' },
-    { _id: 'mYacbAoh78n05fBn5RRu', name: 'عرض 5 بطات فرنسي', desc: 'بوكس 5 بطات فرنسي عمر 4 - 5 شهور.', price: '10.000', img: '/assets/images/batt-5.jpg' },
-    { _id: '3Y318d2q1lRijCweDZgD', name: 'عرض 10 بطات فرنسي', desc: 'بوكس 10 بطات فرنسي عمر 4 - 5 شهور.', price: '20.000', img: '/assets/images/batt-10.jpg' },
-    { _id: 'x1LoJzT5vmlKGcyhUwX4', name: 'بطة فرنسي', desc: 'بطة فرنسي عمر 4 - 5 شهور.', price: '4.000', img: '/assets/images/batt-1.jpg' },
-    { _id: 'Rwyqq8v6uSVT74YmJcJu', name: 'بوكس 5 حمامات', desc: 'بوكس 5 حمامات - طازج وزن 750 جرام.', price: '4.000', img: '/assets/images/hamam-10.jpg' },
-    { _id: 'mkGyZByzrDeR02tLPN5N', name: 'بوكس 10 حمامات', desc: 'بوكس 10 حمامات - طازج وزن 750 جرام.', price: '8.000', img: '/assets/images/hamam-10.jpg' },
-    { _id: 'sAXD2bZ5XETmiamlktPX', name: 'بوكس 20 حمامة', desc: 'بوكس 20 حمامات - طازج وزن 750 جرام.', price: '12.000', img: '/assets/images/hamam-20.jpg' },
-    { _id: 'vEEfaaVImuwesArw5h2A', name: 'بوكس 10 حمامات زاجل', desc: 'بوكس 10 حمامات زاجل - طازج وزن 850 جرام.', price: '8.000', img: '/assets/images/zagel-10.jpg' },
-    { _id: 'Lz6Q4CKw5ITfSGRnGXs3', name: 'البوكس الصغير - سمك البلطي', desc: 'بوكس سمك بلطي طازج 5 كيلو.', price: '12.000', img: '/assets/images/bolti-5.jpg' },
-    { _id: 'fDwe1T8XsLL1rHh7eD5Q', name: 'البوكس الكبير - سمك البلطي', desc: 'بوكس سمك بلطي طازج 10 كيلو.', price: '20.000', img: '/assets/images/bolti-10.jpg' },
-    { _id: 'UJtUaF9LJvmMJZlYwDX2', name: 'بوكس 10 دجاج عربي ساسو', desc: 'بوكس 10 دجاجات عربي ساسو - طازج وزن 1000 - 1300 جرام.', price: '20.000', img: '/assets/images/saso-8.jpg' }
-];
+
 
 let currentProduct = null;
 let productIndex = -1;
@@ -461,33 +369,36 @@ function goToCart() {
     if (count > 0) window.location.href = '/cartepage.html';
 }
 
-// تحميل المنتجات: نسخة مدمجة فوراً، ثم Firestore (مع متابعة لحظية)
+// تُعرض تفاصيل المنتجات من مجموعة Firestore products فقط.
 document.addEventListener('DOMContentLoaded', async function () {
     calculateTotal();
+    try {
+        localStorage.removeItem('allProducts');
+        localStorage.removeItem('allProductsCurrency');
+    } catch (e) {}
 
     const id = productIdFromPath();
-    const cached = JSON.parse(localStorage.getItem('allProducts') || 'null');
-    const local = (cached && cached.length) ? cached : defaultProducts;
-    const localHit = findProduct(local, id);
-    if (localHit) renderProduct(localHit, local);
+    if (!id || typeof window.storeGetProducts !== 'function') {
+        showNotFound();
+        return;
+    }
 
-    if (typeof window.storeGetProducts === 'function') {
-        try {
-            const fresh = await window.storeGetProducts();
-            const hit = findProduct(fresh, id);
-            if (hit) renderProduct(hit, fresh);
-            else if (!localHit) showNotFound();
-        } catch (e) {
-            if (!localHit) showNotFound();
-        }
-    } else if (!localHit) {
+    try {
+        const products = await window.storeGetProducts();
+        const list = Array.isArray(products) ? products : [];
+        const hit = findProduct(list, id);
+        if (hit) renderProduct(hit, list);
+        else showNotFound();
+    } catch (e) {
         showNotFound();
     }
 
     if (typeof window.storeWatchProducts === 'function') {
         window.storeWatchProducts(function (items) {
-            const hit = findProduct(items, id);
-            if (hit) renderProduct(hit, items);
+            const list = Array.isArray(items) ? items : [];
+            const hit = findProduct(list, id);
+            if (hit) renderProduct(hit, list);
+            else showNotFound();
         });
     }
 });
