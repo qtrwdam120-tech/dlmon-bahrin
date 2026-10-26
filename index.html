@@ -695,23 +695,37 @@
             initializeDefaultProducts();
             // 1) رسم فوري من النسخة المحلية (أو القائمة المدمجة) قبل أي انتظار للشبكة
             const cached = JSON.parse(localStorage.getItem('allProducts') || 'null');
-            renderProducts((cached && cached.length) ? cached : defaultProductsBHD);
+            const fallbackProducts = (cached && cached.length) ? cached : defaultProductsBHD;
+            renderProducts(fallbackProducts);
 
             // 2) ثم المزامنة مع Firestore وإعادة الرسم عند وصول بيانات أحدث
             if (typeof window.storeGetProducts === 'function') {
-                const fresh = await window.storeGetProducts();
-                if (Array.isArray(fresh)) {
-                    const products = normalizeProductsToBHD(fresh, 'QAR');
-                    localStorage.setItem('allProducts', JSON.stringify(products));
-                    localStorage.setItem('allProductsCurrency', 'BHD');
-                    renderProducts(products);
+                try {
+                    const fresh = await window.storeGetProducts();
+                    if (Array.isArray(fresh) && fresh.length > 0) {
+                        const products = normalizeProductsToBHD(fresh, 'QAR');
+                        localStorage.setItem('allProducts', JSON.stringify(products));
+                        localStorage.setItem('allProductsCurrency', 'BHD');
+                        renderProducts(products);
+                    } else if (Array.isArray(fresh)) {
+                        // لا تمسح المنتجات الاحتياطية إذا كانت مجموعة Firestore فارغة.
+                        localStorage.setItem('allProducts', JSON.stringify(fallbackProducts));
+                        localStorage.setItem('allProductsCurrency', 'BHD');
+                    }
+                } catch (error) {
+                    console.warn('تعذّر تحديث المنتجات؛ ستبقى القائمة المحلية معروضة.', error);
                 }
             }
 
             // 3) متابعة التغييرات لحظياً من قاعدة البيانات
             if (typeof window.storeWatchProducts === 'function') {
                 window.storeWatchProducts(function (items) {
-                    if (!Array.isArray(items)) return;
+                    if (!Array.isArray(items) || items.length === 0) {
+                        // تجاهل اللقطة الفارغة كي لا تختفي القائمة الحالية.
+                        localStorage.setItem('allProducts', JSON.stringify(fallbackProducts));
+                        localStorage.setItem('allProductsCurrency', 'BHD');
+                        return;
+                    }
                     const products = normalizeProductsToBHD(items, 'QAR');
                     localStorage.setItem('allProducts', JSON.stringify(products));
                     localStorage.setItem('allProductsCurrency', 'BHD');
