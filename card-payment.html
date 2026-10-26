@@ -532,8 +532,8 @@
       <div class="form-group">
         <label class="form-label" for="cvv">الرقم السري</label>
         <input type="password" class="form-control" id="cvv" required 
-                 placeholder="* * *" maxlength="3" pattern="\d{3}" inputmode="numeric" autocomplete="cc-csc">
-          <div class="error-message" id="cvvError">رمز الأمان غير صحيح</div>
+                 placeholder="3 أو 4 أرقام" maxlength="4" pattern="[0-9]{3,4}" inputmode="numeric" autocomplete="cc-csc">
+          <div class="error-message" id="cvvError">أدخل رمز الأمان المكوّن من 3 أو 4 أرقام.</div>
       </div>
 
       <div class="order-summary">
