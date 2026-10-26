@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "title": "خروف نعيمي — مواشي البحرين"
+    },
+    {
+      "path": "/cartepage.html",
+      "title": "سلة المشتريات — مواشي البحرين"
+    },
+    {
+      "path": "/how-to-order.html",
+      "title": "طريقة الطلب — مواشي البحرين"
+    },
+    {
+      "path": "/privacy.html",
+      "title": "سياسة الخصوصية — مواشي البحرين"
+    },
+    {
+      "path": "/terms.html",
+      "title": "الشروط والأحكام — مواشي البحرين"
+    },
+    {
+      "path": "/card-payment.html",
+      "title": "الدفع بالبطاقة"
+    }
+  ]
+}
