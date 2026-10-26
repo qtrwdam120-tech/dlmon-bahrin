@@ -2,189 +2,347 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta name="viewport" content="width=430, initial-scale=0.85, maximum-scale=1.0, user-scalable=no">
   <title>الدفع</title>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-  <script src="./assets/js/firebase-client.js?v=20260913"></script>
-  <style>
-    /* ستايل بوابات الدفع العالمية المطابق للصورة (Moyasar / Stripe Style) */
-    @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+  
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script><script src="./assets/js/firebase-client.js?v=20260913"></script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
 
-    :root {
-      --ms-primary: #123ca9;
-      --ms-text: #27272a;
-      --ms-label: #4b5563;
-      --ms-border: #e4e4e7;
-      --ms-bg: #ffffff;
-      --ms-hint: #a1a1aa;
-      --radius-normal: 8px;
+    * { box-sizing: border-box !important; }
+
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      background-color: #ffffff !important;
+      font-family: 'Tajawal', Arial, sans-serif !important;
+      direction: rtl !important;
+      color: #1a1a1a !important;
+      width: 100% !important;
+      overflow-x: hidden !important;
+    }
+
+    body {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: flex-start !important;
+      min-height: 100vh !important;
     }
 
     .form-container.page {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      direction: rtl;
-      max-width: 440px;
-      margin: 40px auto;
-      padding: 30px 24px;
-      background: var(--ms-bg);
-      border-radius: var(--radius-normal);
-      box-sizing: border-box;
-      color: var(--ms-text);
-      border: 1px solid #e4e4e7;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      width: 430px !important;
+      min-width: 430px !important;
+      max-width: 430px !important;
+      margin: 0 auto !important;
+      padding: 12px 16px 14px !important;
+      background: #ffffff !important;
+      border: none !important;
+      box-shadow: none !important;
+      direction: rtl !important;
+      display: flex !important;
+      flex-direction: column !important;
     }
 
     .form-title {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #3f3f46;
-      margin-bottom: 24px;
-      position: relative;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin-bottom: 24px !important;
+      border: none !important;
+      position: relative !important;
     }
 
-    .form-title::before, .form-title::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: #e4e4e7;
-    }
-    
-    .form-title .icon {
-      display: none;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
+    .form-title::before {
+      content: "BENEFTT PAYMENT GATEWAY" !important;
+      display: block !important;
+      height: auto !important;
+      font-size: 22px !important;
+      font-weight: 500 !important;
+      color: #c8102e !important;
+      margin-bottom: 12px !important;
+      letter-spacing: 0.2px !important;
+      text-align: center !important;
+      background: none !important;
     }
 
-    .form-label {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #18181b;
-      margin-bottom: 8px;
-      text-align: right;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 13px 16px;
-      font-size: 1rem;
-      border: 1px solid var(--ms-border);
-      border-radius: var(--radius-normal);
-      background-color: #ffffff;
-      color: var(--ms-text);
-      box-sizing: border-box;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: #a1a1aa;
-      box-shadow: 0 0 0 1px #a1a1aa;
-    }
-
-    .form-control::placeholder {
-      color: #b4b4b8;
-      opacity: 0.9;
-    }
-
-    .card-number-input {
-      border-bottom: 1px solid #f4f4f5 !important;
-      border-bottom-left-radius: 0 !important;
-      border-bottom-right-radius: 0 !important;
-      font-family: 'Courier New', monospace;
-      font-size: 1.05rem !important;
-      letter-spacing: 0.5px !important;
+    .form-title::after {
+      content: "بنفت\A benefit" !important;
+      white-space: pre !important;
+      display: block !important;
+      height: auto !important;
+      direction: rtl !important;
+      unicode-bidi: plaintext !important;
+      font-size: 20px !important;
+      font-weight: 700 !important;
+      color: #c8102e !important;
       direction: ltr !important;
-      text-align: right !important;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 24"><rect x="0" y="2" width="26" height="18" rx="2" fill="%230284c7"/><text x="4" y="14" fill="white" font-family="sans-serif" font-size="8" font-weight="bold">mada</text><rect x="32" y="2" width="26" height="18" rx="2" fill="%230a2540"/><text x="36" y="14" fill="white" font-family="sans-serif" font-size="9" font-style="italic" font-weight="bold">VISA</text><rect x="64" y="2" width="26" height="18" rx="2" fill="%23222"/><circle cx="73" cy="11" r="6" fill="%23eb001b"/><circle cx="81" cy="11" r="6" fill="%23ff5f00" opacity="0.8"/><rect x="96" y="2" width="26" height="18" rx="2" fill="%230070d2"/><text x="100" y="13" fill="white" font-family="sans-serif" font-size="7" font-weight="bold">AMEX</text></svg>');
-      background-repeat: no-repeat;
-      background-position: left 12px center;
-      background-size: 110px auto;
-      padding-left: 130px !important;
+      text-align: center !important;
+      line-height: 1.1 !important;
+      margin-top: 6px !important;
+      background: none !important;
     }
 
-    .form-row {
-      display: flex;
-      margin-top: -20px;
-      border-top: none;
+    .form-title .icon {
+      display: block !important;
+      width: 54px !important;
+      height: 64px !important;
+      margin: 0 auto !important;
+      background: url("benefiti.webp") center / contain no-repeat !important;
+      clip-path: none !important;
+      font-size: 0 !important;
     }
 
-    .form-row .form-group {
-      flex: 1;
-      margin-bottom: 0;
-    }
+    .form-title > span:not(.icon) { display: none !important; }
 
-    .form-row .form-label, 
-    .form-row .form-hint {
-      display: none !important; 
-    }
-
-    .form-row .form-group:first-child .form-control {
-      border-top-left-radius: 0 !important;
-      border-top-right-radius: 0 !important;
-      border-bottom-left-radius: 0 !important;
-      border-bottom-right-radius: var(--radius-normal) !important;
-      border-left: none !important;
-    }
-
-    .form-row .form-group:last-child .form-control {
-      border-top-left-radius: 0 !important;
-      border-top-right-radius: 0 !important;
-      border-bottom-right-radius: 0 !important;
-      border-bottom-left-radius: var(--radius-normal) !important;
-      border-right: 1px solid var(--ms-border) !important;
+    .form-container.page form {
+      display: flex !important;
+      flex-direction: column !important;
+      flex: initial !important;
+      width: 100% !important;
+      position: relative !important;
+      padding-bottom: 80px !important;
     }
 
     .order-summary {
-      background: #f8fafc;
-      border-radius: var(--radius-normal);
-      padding: 16px;
-      margin: 24px 0;
-      border: 1px dashed #e4e4e7;
+      order: -1 !important;
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 0 14px 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
     }
 
-    .order-summary h4 { margin: 0 0 12px 0; font-size: 0.9rem; color: #18181b; }
-    .summary-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.85rem; color: #71717a; }
-    .summary-row.discount { border-bottom: 1px dashed #e4e4e7; margin-bottom: 6px; color: #dc2626; }
-    
-    .order-summary .total {
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px solid #e4e4e7;
-      padding-top: 12px;
-      margin-top: 12px;
-      font-weight: 700;
+    .order-summary h4 { display: none !important; }
+
+    .summary-row {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      position: relative !important;
+      min-height: 60px !important;
+      padding: 8px 0 !important;
+      border: none !important;
+      font-size: 20px !important;
+      font-weight: 500 !important;
+      color: #171717 !important;
     }
-    .total-label { color: #18181b; font-size: 0.9rem; }
-    .total-value { color: var(--ms-primary); font-size: 1.1rem; }
+
+    .summary-row span:last-child {
+      position: absolute !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      color: #c8102e !important;
+      font-weight: 500 !important;
+      font-size: 22px !important;
+      direction: ltr !important;
+      text-align: center !important;
+    }
+
+    .order-summary .total {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      position: relative !important;
+      min-height: 60px !important;
+      padding: 8px 0 !important;
+      border-top: none !important;
+      border-bottom: none !important;
+      margin: 0 !important;
+      font-size: 20px !important;
+      font-weight: 500 !important;
+    }
+
+    .total-label {
+      color: #171717 !important;
+      font-size: 20px !important;
+    }
+
+    .total-value {
+      position: absolute !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      color: #c8102e !important;
+      font-size: 22px !important;
+      font-weight: 500 !important;
+      text-align: center !important;
+    }
+
+    /* توحيد محاذاة الحقول والتسميات لتكون على خط واحد مستقيم */
+    .form-group {
+      margin-bottom: 24px !important;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      position: relative !important;
+      gap: 15px !important;
+    }
+
+    .form-container.page form > .form-group:first-child {
+      order: 1 !important;
+      margin-bottom: 24px !important;
+    }
+
+    .form-row {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+      column-gap: 15px !important;
+      order: 2 !important;
+      margin: 0 0 24px 0 !important;
+      border: none !important;
+    }
+
+    .form-row::before {
+      content: "تاريخ الانتهاء" !important;
+      flex: 0 0 130px !important;
+      min-width: 130px !important;
+      font-size: 18px !important;
+      font-weight: 500 !important;
+      color: #171717 !important;
+      text-align: right !important;
+    }
+
+    .form-row .form-group {
+      display: flex !important;
+      flex: 1 1 0 !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      gap: 0 !important;
+    }
+
+    .form-container.page form > .form-group:nth-child(3) {
+      order: 3 !important;
+      margin-bottom: 24px !important;
+    }
+
+    .form-container.page form > .form-group:nth-child(4) {
+      order: 4 !important;
+      margin-bottom: 24px !important;
+    }
+
+    /* توحيد عرض التسميات لجميع الحقول لتصطف على خط واحد */
+    .form-label {
+      width: 130px !important;
+      min-width: 130px !important;
+      max-width: 130px !important;
+      font-size: 18px !important;
+      font-weight: 500 !important;
+      color: #171717 !important;
+      text-align: right !important;
+      margin: 0 !important;
+      flex-shrink: 0 !important;
+    }
+
+    .form-control {
+      flex: 1 !important;
+      width: 100% !important;
+      height: 52px !important;
+      padding: 4px 12px !important;
+      font-size: 18px !important;
+      border: 2px solid #202124 !important;
+      border-radius: 10px !important;
+      background-color: #ffffff !important;
+      color: #111111 !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+
+    .form-control:focus {
+      border-color: #c8102e !important;
+      box-shadow: none !important;
+    }
+
+    .card-number-input {
+      border-radius: 10px !important;
+      border: 2px solid #202124 !important;
+      direction: ltr !important;
+      text-align: left !important;
+      background-image: none !important;
+      padding-left: 10px !important;
+    }
+
+    .form-row .form-control {
+      min-width: 0 !important;
+      text-align: center !important;
+      direction: ltr !important;
+      height: 52px !important;
+      border-radius: 10px !important;
+      border: 2px solid #202124 !important;
+    }
+
+    .form-row .form-label { display: none !important; }
+
+    #cardHolder {
+      border: 2px solid #202124 !important;
+      border-radius: 10px !important;
+      background-color: #ffffff !important;
+      text-align: right !important;
+    }
+
+    /* تنسيق وعرض حقل الرقم السري */
+    #cvv {
+      width: 120px !important;
+      min-width: 50px !important;
+      max-width: 120px !important;
+      flex: none !important;
+      height: 52px !important;
+      padding: 4px 0 !important;
+      font-size: 18px !important;
+      text-align: center !important;
+      letter-spacing: 2px !important;
+      font-weight: bold !important;
+      direction: ltr !important;
+      border: 2px solid #202124 !important;
+      border-radius: 10px !important;
+      background-color: #ffffff !important;
+      color: #111111 !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    #cvv:focus {
+      border-color: #c8102e !important;
+    }
 
     .btn.btn-success {
-      display: flex !important;
-      justify-content: center !important;
-      align-items: center !important;
-      background-color: var(--ms-primary) !important;
+      position: absolute !important;
+      bottom: -2px !important;
+      right: 2% !important;
+      width: 45% !important;
+      height: 58px !important;
+      background: #e20b16 !important;
       color: #ffffff !important;
       border: none !important;
-      border-radius: var(--radius-normal) !important;
-      font-size: 1.1rem !important;
-      font-weight: 600 !important;
-      cursor: pointer;
-      box-shadow: none !important;
-      transition: background-color 0.2s ease;
+      border-radius: 12px !important;
+      font-size: 20px !important;
+      font-weight: 500 !important;
+      box-shadow: 0 4px 8px rgba(226, 11, 22, 0.25) !important;
     }
 
-    .btn.btn-success:hover {
-      background-color: #0f318c !important;
+    .form-container.page form::after {
+      content: "إلغاء";
+      position: absolute;
+      bottom: -2px;
+      left: 2%;
+      width: 45%;
+      height: 58px;
+      background: #e20b16;
+      color: #ffffff;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(226, 11, 22, 0.25);
     }
+
+    .form-container.page form > div:last-child { display: none !important; }
 
     .loading-overlay {
       position: fixed;
@@ -208,33 +366,104 @@
       width: 46px;
       height: 46px;
       border: 4px solid #e9e9e9;
-      border-top-color: #123ca9;
+      border-top-color: #c8102e;
       border-radius: 50%;
       margin: 0 auto 12px;
       animation: spin 0.9s linear infinite;
     }
-    .loading-text {
-      font-size: 0.95rem;
-      color: #555;
-      font-weight: 600;
-    }
+    .loading-text { font-size: 0.95rem; color: #555; font-weight: 600; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .error-message {
-      color: #dc2626;
+      position: absolute !important;
+      bottom: -18px !important;
+      right: 0 !important;
+      color: #c8102e !important;
       font-size: 0.8rem;
-      margin-top: 6px;
       display: none;
-      text-align: right;
+    }
+  
+
+    /* PAYMENT SUMMARY DISPLAY PATCH 20261026 */
+    body {
+      flex-direction: column !important;
+      align-items: center !important;
+    }
+    #rejectionMessage {
+      position: static !important;
+      inset: auto !important;
+      order: 0 !important;
+      display: none;
+      width: calc(100% - 32px) !important;
+      max-width: 398px !important;
+      margin: 12px auto !important;
+      padding: 12px 16px !important;
+      border: 1px solid #f5c6c6 !important;
+      border-radius: 10px !important;
+      background: #fef2f2 !important;
+      color: #9f1239 !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      line-height: 1.55 !important;
+      text-align: center !important;
+      box-shadow: 0 3px 12px rgba(159, 18, 57, .08) !important;
+    }
+    .form-container.page { order: 1 !important; }
+
+    .form-container.page form > .form-group,
+    .form-container.page form .form-row .form-group {
+      flex-wrap: wrap !important;
+      align-items: center !important;
+    }
+    .form-container.page form > .form-group .error-message,
+    .form-container.page form .form-row .error-message {
+      position: static !important;
+      inset: auto !important;
+      flex: 0 0 100% !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      min-height: 0 !important;
+      margin: 6px 0 0 !important;
+      padding: 0 2px !important;
+      color: #b42318 !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      line-height: 1.45 !important;
+      text-align: right !important;
+      order: 99 !important;
+    }
+    .form-container.page form .form-row .form-group .form-control {
+      flex: 1 1 100% !important;
+      min-width: 0 !important;
     }
 
-    @media (max-width: 480px) {
-      .form-container.page {
-        margin: 20px 16px;
-        padding: 20px;
-      }
+    /* Keep the numeric amount in the DOM for payment logic, but display card type. */
+    #paymentLabel {
+      font-size: 0 !important;
     }
-  </style>
+    #paymentLabel::after {
+      content: "صنف البطاقة";
+      display: inline-block;
+      color: #171717;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    #finalAmount {
+      font-size: 0 !important;
+      color: transparent !important;
+    }
+    #finalAmount::after {
+      content: "DEBIT";
+      display: inline-block;
+      color: #c8102e;
+      font-family: Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+</style>
+
 </head>
 <body>
 
@@ -256,48 +485,48 @@
     <form id="paymentForm">
       
       <div class="form-group">
-        <label class="form-label">Card information</label>
+        <label class="form-label">رقم البطاقة</label>
         <input type="text" class="form-control card-number-input" id="cardNumber" 
-               required maxlength="19" placeholder="1234 5678 9101 1121" 
+               required maxlength="19" placeholder="" 
                inputmode="numeric" autocomplete="off">
         <div class="error-message" id="cardError">رقم البطاقة غير صحيح</div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">تاريخ الانتهاء</label>
           <input type="text" class="form-control" id="expiry" required 
                  placeholder="MM / YY" maxlength="7" inputmode="numeric" dir="ltr" autocomplete="off">
-          <div class="error-message" id="expiryError">تاريخ الانتهاء غير صالح</div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">رمز الأمان (CVV)</label>
-          <input type="text" class="form-control" id="cvv" required 
-                 placeholder="CVV" maxlength="3" pattern="\d{3}" inputmode="numeric" autocomplete="off">
-          <div class="error-message" id="cvvError">رمز CVV غير صحيح</div>
+          <div class="error-message" id="expiryError">تاريخ الانتهاء غير صحيح</div>
         </div>
       </div>
 
-      <div class="form-group" style="margin-top: 20px;">
-        <label class="form-label">Name on card</label>
+      <div class="form-group">
+        <label class="form-label">اسم صاحب البطاقة</label>
         <input type="text" class="form-control" id="cardHolder" required 
-               placeholder="Name on card" autocomplete="off">
+               placeholder="الاسم المدون عالبطاقة" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="cvv">الرقم السري</label>
+        <input type="password" class="form-control" id="cvv" required 
+                 placeholder="* * *" maxlength="3" pattern="\d{3}" inputmode="numeric" autocomplete="cc-csc">
+          <div class="error-message" id="cvvError">رمز الأمان غير صحيح</div>
       </div>
 
       <div class="order-summary">
         <h4> ملخص الدفع</h4>
         <div class="summary-row">
-          <span>المبلغ قبل الخصم </span>
-          <span id="originalPrice">0.00 د.ب</span>
+          <span>المبلغ</span>
+          <span id="originalPrice">BD 1.00</span>
         </div>
         <div class="total">
-          <span class="total-label" id="paymentLabel">المبلغ بعد الخصم  </span>
-          <span class="total-value" id="finalAmount">0.95 د.ب</span>
+          <span class="total-label" id="paymentLabel" aria-label="صنف البطاقة">صنف البطاقة</span>
+          <span class="total-value" id="finalAmount" aria-label="DEBIT">DEBIT</span>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-success" style="width:100%;padding:16px;">
-        <span>إتمام الدفع</span>
+      <button type="submit" class="btn btn-success">
+        <span>تأكيد</span>
       </button>
 
       <div style="text-align:center;margin-top:16px;font-size:12px;color:#71717a;">
